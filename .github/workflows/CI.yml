@@ -41,3 +41,4 @@ jobs:
                dockerfile: Dockerfile
                push: true
                tags: ${{ secrets.DOCKER_USERNAME }}/django-app:latest
+               
