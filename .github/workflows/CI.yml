@@ -1,10 +1,7 @@
 name: Build and Push
 
 on:
-  push:
-    branches:
-      - master
-      - main
+  pull_request:
 
 jobs:
     build-push:
@@ -35,10 +32,13 @@ jobs:
               username: ${{ secrets.DOCKER_USERNAME }}
               password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
+          - name: Get Date
+            run: echo "DATE=$(date +'%Y-%m-%d-%H-%M-%S')" >> $GITHUB_ENV    
+
           - name: Build and Push Docker Images
             uses: docker/build-push-action@v7.4.0
             with:
                context: .
                dockerfile: Dockerfile
                push: true
-               tags: ${{ secrets.DOCKER_USERNAME }}/django-app:latest
+               tags: ${{ secrets.DOCKER_USERNAME }}/django-app:${{ env.DATE }}
