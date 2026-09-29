@@ -38,8 +38,8 @@ jobs:
             uses: docker/setup-buildx-action@v4.4.1
 
 
-          # - name: Get Date
-          #   run: echo "DATE=$(date +'%Y-%m-%d-%H-%M-%S')" >> $GITHUB_ENV    
+          - name: Get Date
+            run: echo "DATE=$(date +'%Y-%m-%d-%H-%M-%S')" >> $GITHUB_ENV    
 
           - name: Build and Push Docker Images
             uses: docker/build-push-action@v7.4.0
@@ -47,8 +47,9 @@ jobs:
                context: .
                dockerfile: Dockerfile
                push: true
-               tags: ${{ secrets.DOCKER_USERNAME }}/django-app:latest
-    
+               tags: |
+                   ${{ secrets.DOCKER_USERNAME }}/django-app:${{ env.DATE }}
+                   ${{ secrets.DOCKER_USERNAME }}/django-app:latest
 
     Deployment:
        name: Deploy to the server
@@ -62,12 +63,12 @@ jobs:
                 username: ${{ secrets.DOCKER_USERNAME }}
                 password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }} 
 
-          #  - name: Get Date
-          #    run: echo "DATE=$(date +'%Y-%m-%d-%H-%M-%S')" >> $GITHUB_ENV     
+           - name: Get Date
+             run: echo "DATE=$(date +'%Y-%m-%d-%H-%M-%S')" >> $GITHUB_ENV     
 
            - name: Pull and Run the Image from Docker  
              run: |
-                docker run -d --name djangoapp -p 8000:8000 ${{ secrets.DOCKER_USERNAME }}/django-app:latest 
+                docker run -d --name djangoapp -p 8000:8000 ${{ secrets.DOCKER_USERNAME }}/django-app:${{ env.DATE }} 
 
            - name: Check the App 
              run: | 
