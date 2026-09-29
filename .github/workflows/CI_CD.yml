@@ -63,8 +63,8 @@ jobs:
                 username: ${{ secrets.DOCKER_USERNAME }}
                 password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }} 
 
-           - name: Get Date
-             run: echo "DATE=$(date +'%Y-%m-%d-%H-%M-%S')" >> $GITHUB_ENV     
+          #  - name: Get Date
+          #    run: echo "DATE=$(date +'%Y-%m-%d-%H-%M-%S')" >> $GITHUB_ENV     
 
            - name: Pull and Run the Image from Docker  
              run: |
