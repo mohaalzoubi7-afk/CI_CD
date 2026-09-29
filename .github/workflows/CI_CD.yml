@@ -68,11 +68,11 @@ jobs:
 
            - name: Pull and Run the Image from Docker  
              run: |
-                docker run -d --name djangoapp -p 8000:8000 ${{ secrets.DOCKER_USERNAME }}/django-app:${{ env.DATE }} 
+                docker rm -f djangoapp || true 
+                docker run -d --name djangoapp -p 8000:8000 ${{ secrets.DOCKER_USERNAME }}/django-app:latest
 
            - name: Check the App 
              run: | 
                  docker ps 
                  sleep 5 
                  curl http://localhost:8000 
-                           
